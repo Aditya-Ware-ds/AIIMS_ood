@@ -1,0 +1,27 @@
+{
+  "target": "binary: 0=PI-RADS 1-2, 1=PI-RADS 3-5",
+  "modalities": [
+    "t2",
+    "adc",
+    "dwi_highb"
+  ],
+  "models": [
+    "Swin UNETR (MONAI, SSL-pretrained frozen encoder + linear probe)",
+    "MedicalNet 3D ResNet-50 (pretrained frozen encoder + linear probe)",
+    "DenseNet-121 (ImageNet-pretrained frozen encoder + linear probe)",
+    "InceptionResNetV2 (ImageNet-pretrained frozen encoder + linear probe)"
+  ],
+  "fine_tuned_on_this_dataset": true,
+  "fine_tuning_method": "linear probing on frozen pretrained features (logistic regression)",
+  "probe_training_data": "train_df + val_df combined, via K-fold cross-validation",
+  "n_folds": 5,
+  "n_augmented_copies_per_sample": 4,
+  "stacker": "LogisticRegression(class_weight='balanced'), fit on out-of-fold base predictions",
+  "patch_size": [
+    96,
+    96,
+    64
+  ],
+  "neighbor_radius": 1,
+  "seed": 42
+}
